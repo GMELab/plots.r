@@ -139,7 +139,7 @@ grouped_forest_plot <- function(
     rows <- c(
       rows,
       (1 + rows_per_group * (i - 1))
-      :(rows_per_group * i - (rows_per_group - 3))
+      :(rows_per_group * i - (rows_per_group - group_size))
     )
   }
   gcol <- col
@@ -178,7 +178,7 @@ grouped_forest_plot <- function(
     col = col,
     layout = "JAMA",
     header = header,
-    ylim = c(1, items * rows_per_group + 3),
+    ylim = c(1, items * rows_per_group + group_size),
     xlab = xlab,
     ...
   )
@@ -187,7 +187,7 @@ grouped_forest_plot <- function(
   for (i in 1:items) {
     text(
       plot$textpos[1],
-      rows_per_group * (i - 1) + 4,
+      rows_per_group * (i - 1) + group_size + 1,
       slab[i],
       font = 2,
       pos = 4,

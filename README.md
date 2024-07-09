@@ -32,8 +32,8 @@ plots.r::basic_forest_plot(
 plots.r::basic_forest_plot(
     x = c(0.1, 0.2, 0.3, 0.4, 0.5),
     se = c(0.01, 0.02, 0.03, 0.04, 0.05),
-    width = 400,
-    height = 400,
+    width = 500,
+    height = 300,
     name = "Example",
     header = c("Left", "Right"),
     slab = c("Study 1", "Study 2", "Study 3", "Study 4", "Study 5"),
@@ -41,6 +41,8 @@ plots.r::basic_forest_plot(
     # other arguments from https://wviechtb.github.io/metafor/reference/forest.default.html
 )
 ```
+
+![Example forest plot](/Example.png)
 
 ### `plots.r::grouped_forest_plot`
 
@@ -62,9 +64,9 @@ plots.r::grouped_forest_plot(
 plots.r::grouped_forest_plot(
     x = list(c(0.1, 0.2, 0.3, 0.4, 0.5), c(0.1, 0.2, 0.3, 0.4, 0.5)),
     se = list(c(0.01, 0.02, 0.03, 0.04, 0.05), c(0.01, 0.02, 0.03, 0.04, 0.05)),
-    width = 400,
-    height = 400,
-    name = "Example",
+    width = 500,
+    height = 500,
+    name = "Grouped Example",
     header = c("Left", "Right"),
     slab = c("Study 1", "Study 2", "Study 3", "Study 4", "Study 5"),
     xlab = "X-axis label",
@@ -72,3 +74,5 @@ plots.r::grouped_forest_plot(
     # other arguments from https://wviechtb.github.io/metafor/reference/forest.default.html
 )
 ```
+
+![Example forest plot](/Grouped Example.png)
