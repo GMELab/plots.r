@@ -66,7 +66,7 @@ plots.r::grouped_forest_plot(
     se = list(c(0.01, 0.02, 0.03, 0.04, 0.05), c(0.01, 0.02, 0.03, 0.04, 0.05)),
     width = 500,
     height = 500,
-    name = "Grouped Example",
+    name = "Grouped_Example",
     header = c("Left", "Right"),
     slab = c("Study 1", "Study 2", "Study 3", "Study 4", "Study 5"),
     xlab = "X-axis label",
@@ -75,4 +75,4 @@ plots.r::grouped_forest_plot(
 )
 ```
 
-![Example forest plot](/Grouped Example.png)
+![Example forest plot](/Grouped_Example.png)
