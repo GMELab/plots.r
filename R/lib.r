@@ -1,5 +1,3 @@
-#!/usr/bin/env Rscript
-
 if (!require(metafor)) {
   install.packages("metafor")
 }
@@ -9,12 +7,14 @@ library(metafor)
 basic_forest_plot <- function(
     x, se, width, height, name,
     header, slab, xlab, digits = 2,
-    shade = TRUE, cex = 1,
+    shade = TRUE, cex = 1, slab.col,
+    ci.lb, ci.ub, ilab, ilab.lab,
+    col, more,
     ...) {
   if (missing(x)) {
     stop("x is missing")
   }
-  if (missing(se)) {
+  if (missing(se) && (missing(ci.lb) || missing(ci.ub))) {
     stop("se is missing")
   }
   if (missing(width)) {
@@ -46,9 +46,22 @@ basic_forest_plot <- function(
   if (length(slab) != items) {
     stop("length of slab must match length of x")
   }
+  if (missing(ilab)) {
+    empty_ilab <- ilab
+  } else {
+    empty_ilab <- matrix(rep(rep("", times = items), times = ncol(ilab)), ncol = ncol(ilab))
+  }
+  if (missing(col)) {
+    col <- rep("black", times = items)
+  }
+  if (missing(slab.col)) {
+    slab.col <- col
+  }
+
+  o <- order(x)
 
   png(paste0(name, ".png"), width = width, height = height)
-  forest.default(
+  plot <- forest.default(
     x = x,
     sei = se,
     annosym = c(" [", ", ", "]", "\u2212"),
@@ -57,12 +70,41 @@ basic_forest_plot <- function(
     layout = "JAMA",
     order = order(x, decreasing = TRUE),
     header = header,
-    slab = slab,
+    slab = rep("", times = items),
     xlab = xlab,
     shade = shade,
     cex = cex,
+    ilab = empty_ilab,
+    ilab.lab = ilab.lab,
+    top = 3,
+    col = col,
     ...
   )
+  text(
+    plot$textpos[1],
+    plot$rows,
+    slab[o],
+    font = 2,
+    pos = 4,
+    cex = cex,
+    col = slab.col[o],
+  )
+  if (!missing(ilab.lab)) {
+    if (length(ilab.lab) != length(plot$ilab.xpos)) {
+      stop("ilab.lab must be the same length as ilab.xpos")
+    }
+    for (i in seq_along(ilab.lab)) {
+      text(plot$ilab.xpos[i], plot$ylim[2] - (3 - 1) + 1, ilab.lab[i], font = 2, cex = cex)
+    }
+  }
+  if (!missing(ilab)) {
+    for (l in seq_len(ncol(ilab))) {
+      text(plot$ilab.xpos[l], plot$rows, ilab[, l][o], pos = plot$ilab.pos[l], cex = cex, col = col[order(x)])
+    }
+  }
+  if (!missing(more)) {
+    do.call(more, list(plot = plot))
+  }
   dev.off()
 }
 
@@ -71,12 +113,12 @@ grouped_forest_plot <- function(
     x, se, width, height, name,
     header, slab, xlab, glab,
     digits = 2, cex = 1, col,
-    order_by,
+    order_by, ci.lb, ci.ub,
     ...) {
   if (missing(x)) {
     stop("x is missing")
   }
-  if (missing(se)) {
+  if (missing(se) && (missing(ci.lb) || missing(ci.ub))) {
     stop("se is missing")
   }
   if (missing(width)) {
