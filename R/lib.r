@@ -47,9 +47,12 @@ basic_forest_plot <- function(
     stop("length of slab must match length of x")
   }
   if (missing(ilab)) {
-    empty_ilab <- ilab
+    empty_ilab <- matrix(rep("", times = items), ncol = 1)
   } else {
     empty_ilab <- matrix(rep(rep("", times = items), times = ncol(ilab)), ncol = ncol(ilab))
+  }
+  if (missing(ilab.lab)) {
+    ilab.lab <- rep("", times = ncol(empty_ilab))
   }
   if (missing(col)) {
     col <- rep("black", times = items)
@@ -75,7 +78,6 @@ basic_forest_plot <- function(
     shade = shade,
     cex = cex,
     ilab = empty_ilab,
-    ilab.lab = ilab.lab,
     top = 3,
     col = col,
     ...
