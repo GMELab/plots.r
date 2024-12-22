@@ -9,7 +9,7 @@ basic_forest_plot <- function(
     header, slab, xlab, digits = 2,
     shade = TRUE, cex = 1, slab.col,
     ci.lb, ci.ub, ilab, ilab.lab,
-    col, more,
+    col, more, format = "png",
     ...) {
   if (missing(x)) {
     stop("x is missing")
@@ -60,10 +60,19 @@ basic_forest_plot <- function(
   if (missing(slab.col)) {
     slab.col <- col
   }
+  if (format != "png" && format != "svg" && format != "pdf") {
+    stop("format must be one of 'png', 'svg', or 'pdf'");
+  }
 
   o <- order(x)
 
-  png(paste0(name, ".png"), width = width, height = height)
+  if (format == "png") {
+    png(paste0(name, ".png"), width = width, height = height)
+  } else if (format == "svg") { 
+    svg(paste0(name, ".svg"), width = width, height = height)
+  } else if (format == "pdf") {
+    pdf(paste0(name, ".pdf"), width = width, height = height)
+  }
   plot <- forest.default(
     x = x,
     sei = se,
@@ -116,6 +125,7 @@ grouped_forest_plot <- function(
     header, slab, xlab, glab,
     digits = 2, cex = 1, col,
     order_by, ci.lb, ci.ub,
+    format = "png",
     ...) {
   if (missing(x)) {
     stop("x is missing")
@@ -176,6 +186,9 @@ grouped_forest_plot <- function(
       stop("length of se must match for all groups")
     }
   }
+  if (format != "png" && format != "svg" && format != "pdf") {
+    stop("format must be one of 'png', 'svg', or 'pdf'");
+  }
 
   rows_per_group <- group_size + 2
   rows <- c()
@@ -209,7 +222,13 @@ grouped_forest_plot <- function(
     }
   }
 
-  png(paste0(name, ".png"), width = width, height = height)
+  if (format == "png") {
+    png(paste0(name, ".png"), width = width, height = height)
+  } else if (format == "svg") { 
+    svg(paste0(name, ".svg"), width = width, height = height)
+  } else if (format == "pdf") {
+    pdf(paste0(name, ".pdf"), width = width, height = height)
+  }
   plot <- forest.default(
     x = xs[order],
     sei = ses[order],
