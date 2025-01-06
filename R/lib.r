@@ -10,7 +10,7 @@ basic_forest_plot <- function(
     shade = TRUE, cex = 1, slab.col,
     ci.lb, ci.ub, ilab, ilab.lab,
     col, more, format = "png",
-    ...) {
+    dpi = 72, ...) {
   if (missing(x)) {
     stop("x is missing")
   }
@@ -61,17 +61,17 @@ basic_forest_plot <- function(
     slab.col <- col
   }
   if (format != "png" && format != "svg" && format != "pdf") {
-    stop("format must be one of 'png', 'svg', or 'pdf'");
+    stop("format must be one of 'png', 'svg', or 'pdf'")
   }
 
   o <- order(x)
 
   if (format == "png") {
     png(paste0(name, ".png"), width = width, height = height)
-  } else if (format == "svg") { 
-    svg(paste0(name, ".svg"), width = width, height = height)
+  } else if (format == "svg") {
+    svg(paste0(name, ".svg"), width = width / dpi, height = height / dpi)
   } else if (format == "pdf") {
-    pdf(paste0(name, ".pdf"), width = width, height = height)
+    pdf(paste0(name, ".pdf"), width = width / dpi, height = height / dpi)
   }
   plot <- forest.default(
     x = x,
@@ -125,7 +125,7 @@ grouped_forest_plot <- function(
     header, slab, xlab, glab,
     digits = 2, cex = 1, col,
     order_by, ci.lb, ci.ub,
-    format = "png",
+    format = "png", dpi = 72,
     ...) {
   if (missing(x)) {
     stop("x is missing")
@@ -187,7 +187,7 @@ grouped_forest_plot <- function(
     }
   }
   if (format != "png" && format != "svg" && format != "pdf") {
-    stop("format must be one of 'png', 'svg', or 'pdf'");
+    stop("format must be one of 'png', 'svg', or 'pdf'")
   }
 
   rows_per_group <- group_size + 2
@@ -224,10 +224,10 @@ grouped_forest_plot <- function(
 
   if (format == "png") {
     png(paste0(name, ".png"), width = width, height = height)
-  } else if (format == "svg") { 
-    svg(paste0(name, ".svg"), width = width, height = height)
+  } else if (format == "svg") {
+    svg(paste0(name, ".svg"), width = width / dpi, height = height / dpi)
   } else if (format == "pdf") {
-    pdf(paste0(name, ".pdf"), width = width, height = height)
+    pdf(paste0(name, ".pdf"), width = width / dpi, height = height / dpi)
   }
   plot <- forest.default(
     x = xs[order],
