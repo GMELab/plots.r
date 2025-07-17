@@ -64,7 +64,12 @@ basic_forest_plot <- function(
     stop("format must be one of 'png', 'svg', or 'pdf'")
   }
 
-  o <- order(x)
+  dots <- list(...)
+  o <- if ("order" %in% names(dots)) {
+    dots$order
+  } else {
+    order(x)
+  }
 
   if (format == "png") {
     png(paste0(name, ".png"), width = width, height = height)
@@ -80,7 +85,7 @@ basic_forest_plot <- function(
     psize = 1,
     digits = digits,
     layout = "JAMA",
-    order = order(x, decreasing = TRUE),
+    order = rev(o),
     header = header,
     slab = rep("", times = items),
     xlab = xlab,
